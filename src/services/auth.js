@@ -5,14 +5,12 @@ const { APP_AUTH0_DOMAIN, APP_CLIENT_ID, APP_REDIRECT_URI } = import.meta.env;
 export const AuthClient = {
     handleAuth: async () => {
         useAppStore.setState({ loading: true })
-
         const key = "rftk"
         // await Vault.delete(key)
         try {
             const code = AuthClient.getAuthResponseFromCallbackUrl()
             const refreshToken = await Vault.read(key)
             let tokens = null;
-            console.log(code, refreshToken, tokens)
             if (code) {
                 tokens = await AuthClient.exchangeCodeForToken(code)
             } else  if (refreshToken) {

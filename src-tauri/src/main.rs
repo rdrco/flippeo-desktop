@@ -1,10 +1,11 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 use keyring::{Entry};
 use serde::ser::{Serialize};
+use tauri::{Manager, Window};
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![vault_save, vault_read, vault_delete])
+        .invoke_handler(tauri::generate_handler![vault_save, vault_read, vault_delete, close_splashscreen])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -44,4 +45,12 @@ fn vault_delete(service: String, account: String) -> Result<(), CustomError> {
     let entry = Entry::new(&service, &account)?;
     entry.delete_password()?;
     Ok(())
+}
+
+#[tauri::command]
+async fn close_splashscreen(window: Window) {
+    // Close splashscreen
+    window.get_window("splashscreen").expect("no window labeled 'splashscreen' found").close().unwrap();
+    // Show main window
+    window.get_window("main").expect("no window labeled 'main' found").show().unwrap();
 }

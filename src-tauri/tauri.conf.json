@@ -57,10 +57,12 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 720,
         "resizable": true,
         "title": "flippeo",
-        "width": 800
+        "width": 1280,
+        "visible": true,
+        "center": true
       }
     ]
   }
